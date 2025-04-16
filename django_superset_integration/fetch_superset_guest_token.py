@@ -11,7 +11,8 @@ from .models import SupersetDashboard
 @require_safe
 def fetch_superset_guest_token(request, dashboard_id: int):
     """
-    Fonction qui récupère un guest token pour l'intégration d'un dashboard Superset
+    Fonction qui récupère un guest token pour l'intégration
+    d'un dashboard Superset
     1 - Récupère un access token
     2 - Récupère un CSRF token en utilisant l'access token
     3 - Récupère un guest token en utilisant le CSRF token
@@ -20,8 +21,10 @@ def fetch_superset_guest_token(request, dashboard_id: int):
 
     Parameters:
         request
-        dashboard_id (int): L'ID de l'objet SupersetDashboard dans la base de données
-            (ne pas confondre avec l'attribut integration_id de l'objet SupersetDashboard, qui sert à
+        dashboard_id (int): L'ID de l'objet SupersetDashboard dans
+        la base de données
+            (ne pas confondre avec l'attribut integration_id de
+            l'objet SupersetDashboard, qui sert à
             intégrer le dashboard avec SupersetEmbeddedSdk)
     """
     # Récupère un guest_token via l'API Superset
