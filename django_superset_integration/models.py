@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.contrib.admin.models import LogEntry
 
 from cryptography.fernet import Fernet
 
@@ -120,3 +121,15 @@ class SupersetDashboard(models.Model):
 
     def __str__(self):
         return f"Dashboard : {self.name}"
+
+
+class SupersetIntegrationLogEntry(LogEntry):
+    """
+    Proxy de django.contrib.admin.models.LogEntry
+    Pour pouvoir mettre un verbose_name
+    """
+
+    class Meta:
+        proxy = True
+        verbose_name = "Entrée d'historique"
+        verbose_name_plural = "Entrées d'historique"

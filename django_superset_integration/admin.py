@@ -1,14 +1,19 @@
 from django.contrib import admin
+from django.contrib.admin.models import DELETION
+from django.utils.html import escape, format_html
+from django.urls import reverse
 
-from .models import SupersetInstance, SupersetDashboard
+from .models import (
+    SupersetInstance,
+    SupersetDashboard,
+    SupersetIntegrationLogEntry,
+)
 from .forms import SupersetInstanceCreationForm
-
-from .utils import LogChanges
 
 
 # Register your models here.
 @admin.register(SupersetInstance)
-class SupersetInstanceAdmin(LogChanges, admin.ModelAdmin):
+class SupersetInstanceAdmin(admin.ModelAdmin):
     """
     Modèle admin pour SupersetInstance
     Nom affiché : "Instance Superset"
@@ -57,7 +62,7 @@ class SupersetInstanceAdmin(LogChanges, admin.ModelAdmin):
 
 
 @admin.register(SupersetDashboard)
-class SupersetDashboardAdmin(LogChanges, admin.ModelAdmin):
+class SupersetDashboardAdmin(admin.ModelAdmin):
     """
     Modèle admin pour SupersetDashboard
 
@@ -80,3 +85,49 @@ class SupersetDashboardAdmin(LogChanges, admin.ModelAdmin):
     )
 
     list_filter = ("domain",)
+
+
+@admin.register(SupersetIntegrationLogEntry)
+class SupersetIntegrationEntryAdmin(admin.ModelAdmin):
+
+    date_hierarchy = "action_time"
+
+    list_filter = ["action_flag", "content_type"]
+
+    search_fields = ["object_repr", "change_message"]
+
+    list_display = [
+        "action_time",
+        "user",
+        "content_type",
+        "object_link",
+        "action_flag",
+    ]
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return request.user.is_superuser and request.method != "POST"
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def object_link(self, obj):
+        if obj.action_flag == DELETION:
+            link = escape(obj.object_repr)
+        else:
+            ct = obj.content_type
+            link = '<a href="%s">%s</a>' % (
+                reverse(
+                    "admin:%s_%s_change" % (ct.app_label, ct.model),
+                    args=[obj.object_id],
+                ),
+                escape(obj.object_repr),
+            )
+        return format_html(link)
+
+    object_link.short_description = "Objet concerné"
+
+    def queryset(self, request):
+        return super().queryset(request).prefetch_related("content_type")
