@@ -23,14 +23,13 @@ Quick start
 
 3. Generate a Fernet key and add it to your env variables
 
-In a python terminal :
+    In a python terminal:
     from cryptography.fernet import Fernet
     FERNET_KEY = Fernet.generate_key()
 
-The result is a bytestring like b'jozEHFGLKJHEFUIHEZ4'
-**Copy ONLY the content of the string, not the b nor the quotation marks**
-
-In your env variables, create a variable **FERNET_KEY** with the copied content as value
+    The result is a bytestring like b'jozEHFGLKJHEFUIHEZ4'
+    **Copy ONLY the content of the string, not the b nor the quotation marks**
+    In your env variables, create a variable **FERNET_KEY** with the copied content as value
 
 4. Run ``python manage.py migrate`` to create the models.
 
