@@ -11,12 +11,13 @@ from .models import (
 from .forms import SupersetInstanceCreationForm
 
 
-# Register your models here.
 @admin.register(SupersetInstance)
 class SupersetInstanceAdmin(admin.ModelAdmin):
     """
-    Modèle admin pour SupersetInstance
-    Nom affiché : "Instance Superset"
+    Admin model for SupersetInstance
+    Displayed name: "Instance Superset"
+
+    :model:`SupersetInstance`
     """
 
     add_form = SupersetInstanceCreationForm
@@ -41,7 +42,7 @@ class SupersetInstanceAdmin(admin.ModelAdmin):
 
     def save_form(self, request, form, change):
         """
-        Surcharge de admin.ModelAdmin.save_form
+        Override admin.ModelAdmin.save_form
         """
         if not change:
             form.instance = self.model.objects.create(
@@ -53,7 +54,7 @@ class SupersetInstanceAdmin(admin.ModelAdmin):
 
     def get_fields(self, request, obj=None):
         """
-        Exclure le champ password dans le formulaire de modification
+        Exclude field "password" in change form
         """
         fields = super().get_fields(request, obj)
         if obj:
@@ -64,7 +65,7 @@ class SupersetInstanceAdmin(admin.ModelAdmin):
 @admin.register(SupersetDashboard)
 class SupersetDashboardAdmin(admin.ModelAdmin):
     """
-    Modèle admin pour SupersetDashboard
+    Admin model for SupersetDashboard
 
     :model:`SupersetDashboard`
     """
@@ -89,6 +90,10 @@ class SupersetDashboardAdmin(admin.ModelAdmin):
 
 @admin.register(SupersetIntegrationLogEntry)
 class SupersetIntegrationEntryAdmin(admin.ModelAdmin):
+    """
+    Log entries for creation, modification or deletion made
+    to SupersetInstance and SupersetDashboard in admin site
+    """
 
     date_hierarchy = "action_time"
 

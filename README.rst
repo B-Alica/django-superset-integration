@@ -30,8 +30,17 @@ Quick start
 
 5. In your env variables, create a variable **FERNET_KEY** with the copied content as value
 
-6. Run ``python manage.py migrate`` to create the models.
+6. By default, all dashboard data will be displayed. You can override this by creating your own filtering function and adding it in settings.py::
 
-7. Start the development server and visit the admin to create a SupersetInstance and a SupersetDashboard.
+    RLS_FUNCTION = "my_app.my_module.create_rls_clause"
 
-8. TODO.
+    Your function must return a SQL rls clause like this : `[{"clause": "1=1"}]`
+    See Superset documentation for more information
+
+7. Make sure that your Superset instance parameter **GUEST_TOKEN_JWT_EXP_SECONDS** is more than 300 (5 minutes). Otherwise it will expire before it can be refreshed. For example, set it to 600 (10 minutes).
+
+8. Run ``python manage.py migrate`` to create the models.
+
+9. Start the development server and visit the admin to create a SupersetInstance and a SupersetDashboard.
+
+10. TODO.

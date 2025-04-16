@@ -15,17 +15,16 @@
 
 <script src="{% static 'js/superset-embedded-sdk.js' %}"></script>
 <script>
-    // Récupère le guest token auprès du backend de l'application tierce
-    // Le jeton a une durée de validité de 5 minutes, cette fonction est
-    // appelée périodiquement pour permettre a l'utilisateur d'interagir
-    // avec le dashboard
+    // Get guest token from django app backend
+    // The token has a lifetime of 5 min. This function is called
+    // periodically to refresh the token
     async function fetchGuestTokenFromBackend() {
         const response = await fetch('/superset-integration/guest_token/{{ dashboard_id }}');
         const token = await response.text();
         return token;
     }
 
-    // Affiche le tableau de bord dans l'element #graph
+    // Display dashboard inside #graph element
     supersetEmbeddedSdk.embedDashboard({
         id: "{{ dashboard_integration_id }}",
         supersetDomain: "https://" + "{{ superset_domain }}",

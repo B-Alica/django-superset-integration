@@ -6,7 +6,7 @@ from .models import SupersetInstance
 
 class SupersetInstanceCreationForm(forms.ModelForm):
     """
-    Formulaire de création d'instance Superset
+    SupersetInstance creation form
     """
 
     address = forms.CharField(

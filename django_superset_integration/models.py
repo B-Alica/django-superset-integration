@@ -5,30 +5,28 @@ from django.contrib.admin.models import LogEntry
 from cryptography.fernet import Fernet
 
 
-# Create your models here.
 class SupersetInstance(models.Model):
     """
-    Modèle stockant l'adresse de votre instance Superset
-    ainsi que l'username permettant d'y accéder
+    SupersetInstance model containing your Superset instance's address
+    and the username to access it
     ...
 
     Attributes
     ----------
     address: str
-        Adresse url de votre instance Superset
+        Url address of your Superset instance
 
     username: str
-        Nom d'utilisateur pour accéder à l'instance Superset
-        Par défaut : "superset_api"
+        Username to access your Superset instance
+        By default: "superset_api"
 
     password: str
-        Mot de passe pour accéder à l'instance Superset
+        Password to access your Superset instance
 
     Methods
     ----------
     set_password(self, raw_password):
-        stocke le mot de passe dans le champ mot de passe après l'avoir
-        hashé avec django.contrib.auth.hashers.make_password
+        Set password in password field after hashing it with django.contrib.auth.hashers.make_password
     """
 
     address = models.CharField(
@@ -65,23 +63,29 @@ class SupersetInstance(models.Model):
 
 class SupersetDashboard(models.Model):
     """
-    Modèle stockant l'ID d'intégration et le nom des dashboards Superset
-    qu'on souhaite intégrer dans notre application
+    SupersetDashboard containing the integration ID and
+    name of your Superset dashboard
     ...
 
     Attributes
     ----------
     integration_id: str
-        ID d'intégration du dashboard Superset
-        De la forme xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-        où x sont des chiffres et des lettres
+        Integratrion ID of your Superset dashboard
+        Format : xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        where x are numbers and letters
 
     name: str
-        Nom du dashboard
+        Name of the dashboard
 
     domain: SupersetInstance
-        Clé étrangère
-        Domaine Superset sur lequel se trouve le dashboard
+        Foreign key
+        Superset instance containing the dashboard
+
+    comment: str
+        Free text field for your comments
+
+    superset_link: str
+        Link to the dashboard in Superset
     """
 
     integration_id = models.CharField(
@@ -125,8 +129,8 @@ class SupersetDashboard(models.Model):
 
 class SupersetIntegrationLogEntry(LogEntry):
     """
-    Proxy de django.contrib.admin.models.LogEntry
-    Pour pouvoir mettre un verbose_name
+    Proxy of django.contrib.admin.models.LogEntry
+    to set a verbose_name
     """
 
     class Meta:

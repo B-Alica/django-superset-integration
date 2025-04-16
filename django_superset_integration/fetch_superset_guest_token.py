@@ -1,41 +1,58 @@
+import importlib
+import requests
+from cryptography.fernet import Fernet
+
 from django.http import HttpResponse
 from django.views.decorators.http import require_safe
 from django.conf import settings
 
-import requests
-from cryptography.fernet import Fernet
-
 from .models import SupersetDashboard
+
+
+def create_rls_clause(user):
+    """
+    SQL clause to apply to the dashboard data
+    Can be adjusted to limit data displayed in the dashboard
+    Clause "1=1" apply no filter, so we get all the data
+    Clause "1=0" get no data
+
+    Return format : [{"clause": "1=1"}]
+    """
+
+    if not user:
+        # No data
+        return [{"clause": "1=0"}]
+
+    # All data
+    return [{"clause": "1=1"}]
 
 
 @require_safe
 def fetch_superset_guest_token(request, dashboard_id: int):
     """
-    Fonction qui récupère un guest token pour l'intégration
-    d'un dashboard Superset
-    1 - Récupère un access token
-    2 - Récupère un CSRF token en utilisant l'access token
-    3 - Récupère un guest token en utilisant le CSRF token
+    Get a guest token for integration of a Superset dashboard
+    1 - Get an access token
+    2 - Get a CSRF token by using the access token
+    3 - Get a guest token by using the CSRF token
 
-    Retourne une HttpResponse avec le guest token
+    Return a HttpResponse with the guest token
 
     Parameters:
         request
-        dashboard_id (int): L'ID de l'objet SupersetDashboard dans
-        la base de données
-            (ne pas confondre avec l'attribut integration_id de
-            l'objet SupersetDashboard, qui sert à
-            intégrer le dashboard avec SupersetEmbeddedSdk)
+        dashboard_id (int): SupersetDashboard object ID in database
+            (not to be confused with attribute integration_id of
+            SupersetDashboard object, which is used to integrate the
+            dashboard with SupersetEmbeddedSdk)
     """
-    # Récupère un guest_token via l'API Superset
-    # Ce guest_token permet l'accès du client au dashboard Superset
+    # Get a guest_token from Superset API
+    # The guest_token allow client access to the Superset dashboard
     with requests.Session() as session:
         dashboard = SupersetDashboard.objects.get(id=dashboard_id)
         dashboard_integration_id = dashboard.integration_id
         superset_domain = dashboard.domain.address
         superset_username = dashboard.domain.username
 
-        # Authentification pour accès a l'API
+        # Authentication for API access
         url = f"https://{superset_domain}/api/v1/security/login"
 
         def get_password(password):
@@ -60,22 +77,40 @@ def fetch_superset_guest_token(request, dashboard_id: int):
         csrf_token = response.json()["result"]
 
         cookie = response.headers["set-cookie"].split("; ")[0]
-        # Recuperation du guest_token pour l'affichage du diagramme
+
+        try:
+            user = request.user
+        except Exception:
+            # If no user, no guest_token
+            return False
+
+        # SQL clause to apply to the dashboard data
+        # Can be adjusted to limit data displayed in the dashboard
+        # Clause "1=1" apply no filter, so we get all the data
+        # Clause "1=0" get no data
+        # the default function can be overridden by creating
+        # your own and setting its path in settings.RLS_FUNCTION
+        rls_function_path = getattr(settings, "RLS_FUNCTION", None)
+        if rls_function_path:
+            # Dynamically import the function
+            module_path, func_name = rls_function_path.rsplit(".", 1)
+            module = importlib.import_module(module_path)
+            rls_function = getattr(module, func_name)
+        else:
+            rls_function = create_rls_clause
+
+        rls = rls_function(user)
+
+        if not rls:
+            # If no rls clause, show no data
+            rls = [{"clause": "1=0"}]
+
+        # Get guest_token to display the dashboard
         params = {
             "resources": [
                 {"id": dashboard_integration_id, "type": "dashboard"}
             ],
-            "rls": [
-                {
-                    # Clause SQL appliquée à la récupération des donnes du
-                    # dashboard
-                    # Elle peut être ajustée pour limiter les données
-                    # affichées dans le dashboard en fonction du profil
-                    # utilisateur
-                    # La valeur "1=1" permet de n'appliquer aucun filtre
-                    "clause": "1=1"
-                }
-            ],
+            "rls": rls,
             "user": {
                 "first_name": "Prenom",
                 "last_name": "Nom",
