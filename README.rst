@@ -39,8 +39,26 @@ Quick start
 
 7. Make sure that your Superset instance parameter **GUEST_TOKEN_JWT_EXP_SECONDS** is more than 300 (5 minutes). Otherwise it will expire before it can be refreshed. For example, set it to 600 (10 minutes).
 
-8. Run ``python manage.py migrate`` to create the models.
+8. In the template where you want to integrate the dashboard, add the following in your <head>::
 
-9. Start the development server and visit the admin to create a SupersetInstance and a SupersetDashboard.
+    <link href="{% static 'css/ponctual-rejects.css' %}" rel="stylesheet"/>
 
-10. TODO.
+9. Then add the following at the emplacement where you want the dashboard::
+
+    {% include "django_superset_integration/superset-integration.html" %}
+
+10. In your view's get_context_data, add the following::
+
+    dashboard_name = my_dashboard
+    dashboard = SupersetDashboard.objects.get(name__iexact=dashboard_name)
+    context["dashboard_integration_id"] = dashboard.integration_id
+    context["dashboard_id"] = dashboard.id
+    context["superset_domain"] = dashboard.domain.address
+
+11. Run ``python manage.py migrate`` to create the models.
+
+12. Start the development server and visit the admin site to create a SupersetInstance object.
+
+13. After you have created a SupersetInstance object, create a SupersetDashboard object.
+
+14. TODO.
