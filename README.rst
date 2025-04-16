@@ -34,7 +34,7 @@ Quick start
 
     RLS_FUNCTION = "my_app.my_module.create_rls_clause"
 
-    Your function must return a SQL rls clause like this : `[{"clause": "1=1"}]`
+    Your function must take a parameter `user` and return a SQL rls clause like this : `[{"clause": "1=1"}]`
     See Superset documentation for more information
 
 7. Make sure that your Superset instance parameter **GUEST_TOKEN_JWT_EXP_SECONDS** is more than 300 (5 minutes). Otherwise it will expire before it can be refreshed. For example, set it to 600 (10 minutes).
