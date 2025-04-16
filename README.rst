@@ -14,14 +14,26 @@ Quick start
     INSTALLED_APPS = [
         ...,
         "django_superset_integration",
+        ...,
     ]
 
 2. Include the superset-integration URLconf in your project urls.py like this::
 
     path("superset_integration/", include("django_superset_integration.urls")),
 
-3. Run ``python manage.py migrate`` to create the models.
+3. Generate a Fernet key and add it to your env variables
 
-4. Start the development server and visit the admin to create a SupersetInstance and a SupersetDashboard.
+In a python terminal :
+    from cryptography.fernet import Fernet
+    FERNET_KEY = Fernet.generate_key()
 
-5. TODO.
+The result is a bytestring like b'jozEHFGLKJHEFUIHEZ4'
+**Copy ONLY the content of the string, not the b nor the quotation marks**
+
+In your env variables, create a variable **FERNET_KEY** with the copied content as value
+
+4. Run ``python manage.py migrate`` to create the models.
+
+5. Start the development server and visit the admin to create a SupersetInstance and a SupersetDashboard.
+
+6. TODO.
