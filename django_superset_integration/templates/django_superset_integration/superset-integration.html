@@ -1,0 +1,73 @@
+{% load static %}
+
+<link href="{% static 'superset_integration/css/superset-integration.css' %}" rel="stylesheet"/>
+
+<button id="superset-fullscreen" class="fr-btn fr-mb-3w">
+    Afficher en plein écran
+</button>
+
+<button id="superset-fullscreen-exit" class="fr-btn">
+    Quitter le mode plein écran
+</button>
+
+<div id="superset-integration">
+</div>
+
+<script src="{% static 'js/superset-embedded-sdk.js' %}"></script>
+<script>
+    // Récupère le guest token auprès du backend de l'application tierce
+    // Le jeton a une durée de validité de 5 minutes, cette fonction est
+    // appelée périodiquement pour permettre a l'utilisateur d'interagir
+    // avec le dashboard
+    async function fetchGuestTokenFromBackend() {
+        const response = await fetch('/superset-integration/guest_token/{{ dashboard_id }}');
+        const token = await response.text();
+        return token;
+    }
+
+    // Affiche le tableau de bord dans l'element #graph
+    supersetEmbeddedSdk.embedDashboard({
+        id: "{{ dashboard_integration_id }}",
+        supersetDomain: "https://" + "{{ superset_domain }}",
+        mountPoint: document.getElementById("superset-integration"),
+        fetchGuestToken: () => fetchGuestTokenFromBackend(),
+        dashboardUiConfig: {
+            hideTitle: true,
+            filters: {
+                expanded: true,
+            }
+        },
+    });
+
+    let iframe = document.getElementById("superset-integration").firstElementChild;
+    let iframe_height = "1200px";
+
+    $(window).on('load',function () {
+        {% if iframe_height and iframe_height.isdigit %}
+            iframe_height = "{{ iframe_height }}px";
+        {% elif iframe_height %}
+            iframe_height = "{{ iframe_height }}";
+        {% endif %}
+        iframe.height = iframe_height;
+    });
+
+    $("#superset-fullscreen").click(function(ev)
+    {
+        $(".fr-header").hide();
+        $(".fr-footer").hide();
+        $("#superset-fullscreen-exit").show();
+        $("#superset-fullscreen-exit").css({visibility: "visible"});
+        $("#superset-fullscreen-exit").css({opacity: 100});
+        $("#superset-integration").addClass("fullScreen");
+        iframe.height = "100%";
+    });
+
+    $("#superset-fullscreen-exit").click(function(ev)
+    {
+        $(".fr-header").show();
+        $(".fr-footer").show();
+        $("#superset-fullscreen-exit").hide();
+        $("#superset-integration").removeClass("fullScreen");
+        iframe.height = iframe_height;
+    });
+</script>

@@ -1,0 +1,2 @@
+recursive-include django_superset_integration/static *
+recursive-include django_superset_integration/templates *
