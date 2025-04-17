@@ -28,7 +28,7 @@ def create_rls_clause(user):
 
 
 @require_safe
-def fetch_superset_guest_token(request, dashboard_id: int):
+def fetch_superset_guest_token(request, dashboard_id: str):
     """
     Get a guest token for integration of a Superset dashboard
     1 - Get an access token
@@ -39,7 +39,7 @@ def fetch_superset_guest_token(request, dashboard_id: int):
 
     Parameters:
         request
-        dashboard_id (int): SupersetDashboard object ID in database
+        dashboard_id (str): SupersetDashboard object ID in database
             (not to be confused with attribute integration_id of
             SupersetDashboard object, which is used to integrate the
             dashboard with SupersetEmbeddedSdk)
@@ -47,7 +47,7 @@ def fetch_superset_guest_token(request, dashboard_id: int):
     # Get a guest_token from Superset API
     # The guest_token allow client access to the Superset dashboard
     with requests.Session() as session:
-        dashboard = SupersetDashboard.objects.get(id=dashboard_id)
+        dashboard = SupersetDashboard.objects.get(id=int(dashboard_id))
         dashboard_integration_id = dashboard.integration_id
         superset_domain = dashboard.domain.address
         superset_username = dashboard.domain.username
