@@ -1,5 +1,5 @@
 MANIFEST.in
-README.rst
+README.md
 pyproject.toml
 django_superset_integration/__init__.py
 django_superset_integration/admin.py

@@ -10,7 +10,7 @@ authors = [
     {name = "Alica Burlot",email = "alica.burlot@developpement-durable.gouv.fr"}
 ]
 license = "GPL-3.0-or-later"
-readme = "README.rst"
+readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
 ]

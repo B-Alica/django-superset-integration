@@ -1,13 +1,10 @@
-============
-django-superset-integration
-============
+# django-superset-integration
 
 django-superset-integration is a Django app to integration Apache Superset dashboards into a Django application.
 
 Detailed documentation is in the "docs" directory.
 
-Quick start
------------
+## Quick start
 
 1. Add "superset-integration" to your INSTALLED_APPS setting like this::
 
