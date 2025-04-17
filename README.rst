@@ -60,5 +60,3 @@ Quick start
 12. Start the development server and visit the admin site to create a SupersetInstance object.
 
 13. After you have created a SupersetInstance object, create a SupersetDashboard object.
-
-14. TODO.
