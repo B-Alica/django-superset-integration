@@ -4,7 +4,7 @@ from .fetch_superset_guest_token import fetch_superset_guest_token
 
 urlpatterns = [
     path(
-        "/<slug:dashboard_id>",
+        "<slug:dashboard_id>",
         fetch_superset_guest_token,
         name="guest-token",
     ),
