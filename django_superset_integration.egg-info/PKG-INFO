@@ -3,10 +3,13 @@ Name: django-superset-integration
 Version: 0.1.0
 Summary: A Django app to integrate Apache Superset dashboards into a Django application
 Author-email: Alica Burlot <alica.burlot@developpement-durable.gouv.fr>
+License-Expression: GPL-3.0-or-later
+Project-URL: Homepage, https://github.com/B-Alica/django-superset-integration
+Project-URL: Issues, https://github.com/B-Alica/django-superset-integration/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
 Requires-Python: >=3.10
 Description-Content-Type: text/x-rst
-License-File: LICENSE
-Dynamic: license-file
 
 ============
 django-superset-integration

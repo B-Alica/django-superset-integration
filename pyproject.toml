@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=77.0.3"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -9,7 +9,16 @@ description = "A Django app to integrate Apache Superset dashboards into a Djang
 authors = [
     {name = "Alica Burlot",email = "alica.burlot@developpement-durable.gouv.fr"}
 ]
+license = "GPL-3.0-or-later"
 readme = "README.rst"
 requires-python = ">=3.10"
 dependencies = [
 ]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/B-Alica/django-superset-integration"
+Issues = "https://github.com/B-Alica/django-superset-integration/issues"
