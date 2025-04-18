@@ -100,19 +100,4 @@ class Migration(migrations.Migration):
                 ),
             ],
         ),
-        migrations.CreateModel(
-            name="SupersetIntegrationLogEntry",
-            fields=[],
-            options={
-                "verbose_name": "Entrée d'historique",
-                "verbose_name_plural": "Entrées d'historique",
-                "proxy": True,
-                "indexes": [],
-                "constraints": [],
-            },
-            bases=("admin.logentry",),
-            managers=[
-                ("objects", django.contrib.admin.models.LogEntryManager()),
-            ],
-        ),
     ]

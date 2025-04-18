@@ -140,15 +140,3 @@ class SupersetDashboard(models.Model):
 
     def __str__(self):
         return f"Dashboard : {self.name}"
-
-
-class SupersetIntegrationLogEntry(LogEntry):
-    """
-    Proxy of django.contrib.admin.models.LogEntry
-    to set a verbose_name
-    """
-
-    class Meta:
-        proxy = True
-        verbose_name = "Entrée d'historique"
-        verbose_name_plural = "Entrées d'historique"
