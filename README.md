@@ -1,5 +1,11 @@
 # django-superset-integration
 
+![PyPI - Version](https://img.shields.io/pypi/v/django-superset-integration)
+![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/B-Alica/django-superset-integration)
+
+![Monthly Downloads](https://img.shields.io/pypi/dm/django-superset-integration)
+![Total Downloads](https://img.shields.io/pepy/dt/django-superset-integration)
+
 `django-superset-integration` is a Django app to integration Apache Superset dashboards into a Django application.
 
 ## Quick start
