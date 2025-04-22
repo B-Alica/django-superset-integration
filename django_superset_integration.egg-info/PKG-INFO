@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: django-superset-integration
-Version: 0.1.3
+Version: 0.1.4
 Summary: A Django app to integrate Apache Superset dashboards into a Django application
 Author-email: Alica Burlot <alica.burlot@developpement-durable.gouv.fr>
 License-Expression: GPL-3.0-or-later
@@ -12,6 +12,12 @@ Requires-Python: >=3.10
 Description-Content-Type: text/markdown
 
 # django-superset-integration
+
+![PyPI - Version](https://img.shields.io/pypi/v/django-superset-integration)
+![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/B-Alica/django-superset-integration)
+
+![Monthly Downloads](https://img.shields.io/pypi/dm/django-superset-integration)
+![Total Downloads](https://img.shields.io/pepy/dt/django-superset-integration)
 
 `django-superset-integration` is a Django app to integration Apache Superset dashboards into a Django application.
 
