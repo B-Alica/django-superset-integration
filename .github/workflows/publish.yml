@@ -32,13 +32,13 @@ jobs:
       # install dependencies if cache does not exist
       #----------------------------------------------
       - name: Install dependencies
-        run: poetry install --no-interaction --no-root --without dev
+        run: poetry install --no-interaction --no-root
 
       #----------------------------------------------
       # install your root project, if required
       #----------------------------------------------
       - name: Install project
-        run: poetry install --no-interaction --without dev
+        run: poetry install --no-interaction
 
       #----------------------------------------------
       # config pypi token
