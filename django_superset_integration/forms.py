@@ -19,7 +19,7 @@ class SupersetInstanceCreationForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={"required": True, "id": "username-field"}
         ),
-        help_text="nom d'utilisateur permettant de se connecter en api à votre instance Superset",
+        help_text="nom d'utilisateur du compte de service, permettant de se connecter en api à votre instance Superset",
     )
 
     password = forms.CharField(
@@ -28,7 +28,7 @@ class SupersetInstanceCreationForm(forms.ModelForm):
         widget=forms.PasswordInput(
             attrs={"required": True, id: "password-field"}
         ),
-        help_text="mot de passe permettant de se connecter en api à votre instance Superset",
+        help_text="mot de passe du compte de service permettant de se connecter en api à votre instance Superset",
     )
 
     class Meta:
