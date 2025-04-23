@@ -65,23 +65,36 @@ See Superset documentation for more information
 10. Then add the following at the emplacement where you want the dashboard:
 
 ```html
+{% load static %}
+
+...
+
 {% include "django_superset_integration/superset-integration.html" %}
 ```
 
-11. In your view's `get_context_data`, add the following:
+11. Run `python manage.py migrate` to create the models.
+
+12. Start the development server and visit the admin site to create a `SupersetInstance` object.
+
+13. After you have created a `SupersetInstance` object, create a `SupersetDashboard` object.
+
+14. In the view where you want to integrate the dashboard, in `get_context_data`, add the following:
 
 ```python
-dashboard_name = my_dashboard
-dashboard = SupersetDashboard.objects.get(name__iexact=dashboard_name)
-context["dashboard_integration_id"] = dashboard.integration_id
-context["dashboard_id"] = dashboard.id
-context["superset_domain"] = dashboard.domain.address
+def get_context_data(self, **kwargs):
+    context = super().get_context_data(**kwargs)
+
+    ...
+
+    dashboard_name = "THE NAME OF YOUR DASHBOARD FROM STEP 13"
+    dashboard = SupersetDashboard.objects.get(name__iexact=dashboard_name)
+    context["dashboard_integration_id"] = dashboard.integration_id
+    context["dashboard_id"] = dashboard.id
+    context["superset_domain"] = dashboard.domain.address
+
+    ...
+
+    return context
 ```
-
-12. Run `python manage.py migrate` to create the models.
-
-13. Start the development server and visit the admin site to create a `SupersetInstance` object.
-
-14. After you have created a `SupersetInstance` object, create a `SupersetDashboard` object.
 
 15. That should be it!
