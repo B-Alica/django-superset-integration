@@ -76,7 +76,17 @@ See Superset documentation for more information
 
 12. Start the development server and visit the admin site to create a `SupersetInstance` object.
 
+    - address: the address of your Superset instance
+    - username: the username that allows to connect via api to your instance. By default : superset_api
+    - password: the password that allows to connect via api to your instance.
+
 13. After you have created a `SupersetInstance` object, create a `SupersetDashboard` object.
+
+    - integration_id: the integration id given by Superset to integrate your dashboard
+    - name: a name for your dashboard
+    - domain: (foreign key) the SupersetInstance object corresponding to the instance where the dashboard is
+    - comment: (optional) a plain text comment
+    - superset_link: (optional) the link to your dashboard in Superset
 
 14. In the view where you want to integrate the dashboard, in `get_context_data`, add the following:
 
