@@ -14,3 +14,18 @@
     top: 0;
     left: 0;
 }
+
+.fr-container--fluid {
+    overflow: visible;
+}
+
+iframe {
+    width:100%;
+    min-height:600px;
+}
+
+#graph {
+    width: 80vw;
+    position: relative;
+    left: calc(-30vw + 35%);
+}
