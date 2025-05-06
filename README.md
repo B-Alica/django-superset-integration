@@ -62,13 +62,7 @@ See Superset documentation for more information
 
 9. Make sure that your Superset instance parameter `GUEST_TOKEN_JWT_EXP_SECONDS` is more than 300 (5 minutes). Otherwise it will expire before it can be refreshed. For example, set it to 600 (10 minutes).
 
-10. In the template where you want to integrate the dashboard, add the following in your `<head>`:
-
-```html
-<link href="{% static 'css/ponctual-rejects.css' %}" rel="stylesheet"/>
-```
-
-11. Then add the following at the emplacement where you want the dashboard:
+10. In the template where you want to integrate the dashboard, add the following at the emplacement where you want the dashboard:
 
 ```html
 {% load static %}
@@ -78,16 +72,16 @@ See Superset documentation for more information
 {% include "django_superset_integration/superset-integration.html" %}
 ```
 
-12. Run `python manage.py migrate` to create the models.
+11. Run `python manage.py migrate` to create the models.
 
-13. Start the development server and visit the admin site to create a `SupersetInstance` object.
+12. Start the development server and visit the admin site to create a `SupersetInstance` object.
 
     - address: the address of your Superset instance
     - username: the username that allows to connect via api to your instance. By default : superset_api
     You need to have a service account with minimal permissions to embed dashboards. See Superset documentation for more info.
     - password: the password that allows to connect via api to your instance.
 
-14. After you 
+13. After you 
 have created a `SupersetInstance` object, create a `SupersetDashboard` object.
     - integration_id: the integration id given by Superset to integrate your dashboard
     - name: a name for your dashboard
@@ -95,7 +89,7 @@ have created a `SupersetInstance` object, create a `SupersetDashboard` object.
     - comment: (optional) a plain text comment
     - superset_link: (optional) the link to your dashboard in Superset
 
-15. In the view where you want to integrate the dashboard, in `get_context_data`, add the following:
+14. In the view where you want to integrate the dashboard, in `get_context_data`, add the following:
 
 ```python
 from django_superset_integration.models import SupersetDashboard
@@ -116,4 +110,4 @@ def get_context_data(self, **kwargs):
     return context
 ```
 
-16. That should be it!
+15. That should be it!
