@@ -1,6 +1,8 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.admin.models import LogEntry
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 
 from cryptography.fernet import Fernet
 
@@ -59,6 +61,19 @@ class SupersetInstance(models.Model):
         cipher_suite = Fernet(settings.ENCRYPTION_KEY)
         encrypted_password = cipher_suite.encrypt(raw_password.encode())
         self.password = encrypted_password.decode()
+
+
+@receiver(pre_save, sender=SupersetInstance)
+def superset_instance_pre_save_handler(sender, instance, *args, **kwargs):
+    """
+    SupersetInstance.address should not begin with "http://" or "https://"
+    so we remove this part if necessary
+    """
+
+    if instance.address.startswith("http://") or instance.address.startswith(
+        "https://"
+    ):
+        instance.address = instance.address.split("//", 1)[1]
 
 
 class SupersetDashboard(models.Model):
