@@ -2,11 +2,11 @@
 
 <link href="{% static 'django_superset_integration/css/django-superset-integration.css' %}" rel="stylesheet"/>
 
-<button id="superset-fullscreen" class="fr-btn fr-mb-3w">
+<button id="superset-fullscreen" class="{{ button_fullscreen_classes }}">
     Afficher en plein écran
 </button>
 
-<button id="superset-fullscreen-exit" class="fr-btn">
+<button id="superset-fullscreen-exit" class="{{ button_quit_fullscreen_classes }}">
     Quitter le mode plein écran
 </button>
 
@@ -41,32 +41,58 @@
     let iframe = document.getElementById("superset-integration").firstElementChild;
     let iframe_height = "1200px";
 
-    $(window).on('load',function () {
+    window.onload = (event) => {
         {% if iframe_height and iframe_height.isdigit %}
             iframe_height = "{{ iframe_height }}px";
         {% elif iframe_height %}
             iframe_height = "{{ iframe_height }}";
         {% endif %}
         iframe.height = iframe_height;
-    });
+    };
 
-    $("#superset-fullscreen").click(function(ev)
+    const btn_fullscreen = document.getElementById("superset-fullscreen");
+    const btn_fullscreen_exit = document.getElementById("superset-fullscreen-exit");
+    const header = document.getElementsByTagName("header")[0];
+    const footer = document.getElementsByTagName("footer")[0];
+    let superset_integration = document.getElementById("superset-integration");
+    btn_fullscreen.addEventListener("click", function()
     {
-        $(".fr-header").hide();
-        $(".fr-footer").hide();
-        $("#superset-fullscreen-exit").show();
-        $("#superset-fullscreen-exit").css({visibility: "visible"});
-        $("#superset-fullscreen-exit").css({opacity: 100});
-        $("#superset-integration").addClass("fullScreen");
+        try {
+            header.style.display = "none";
+        } catch (error) {
+            // no header element
+        }
+
+        try {
+            footer.style.display = "none";
+        } catch (error) {
+            // no footer element
+        }
+        
+        btn_fullscreen_exit.style.display = "block";
+        btn_fullscreen_exit.style.visibility = "visible";
+        btn_fullscreen_exit.style.opacity = 100;
+        superset_integration.classList.add("fullScreen");
         iframe.height = "100%";
-    });
+    }); 
 
-    $("#superset-fullscreen-exit").click(function(ev)
-    {
-        $(".fr-header").show();
-        $(".fr-footer").show();
-        $("#superset-fullscreen-exit").hide();
-        $("#superset-integration").removeClass("fullScreen");
+    
+    btn_fullscreen_exit.addEventListener("click", function()
+    { 
+        try {
+            header.style.display = "block";
+        } catch (error) {
+            // no header element
+        }
+
+        try {
+            footer.style.display = "block";
+        } catch (error) {
+            // no footer element
+        }
+
+        btn_fullscreen_exit.style.display = "none";
+        superset_integration.classList.remove("fullScreen");
         iframe.height = iframe_height;
-    });
+    }); 
 </script>
