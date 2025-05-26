@@ -76,8 +76,6 @@ def fetch_superset_guest_token(request, dashboard_id: str):
         response = session.get(url)
         csrf_token = response.json()["result"]
 
-        cookie = response.headers["set-cookie"].split("; ")[0]
-
         try:
             user = request.user
         except Exception:
@@ -120,7 +118,6 @@ def fetch_superset_guest_token(request, dashboard_id: str):
         headers = {
             "Content-Type": "application/json",
             "X-Csrftoken": csrf_token,
-            "Cookie": cookie,
         }
         session.headers.update(headers)
         url = f"https://{superset_domain}/api/v1/security/guest_token/"
