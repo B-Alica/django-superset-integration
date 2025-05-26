@@ -110,4 +110,21 @@ def get_context_data(self, **kwargs):
     return context
 ```
 
-15. That should be it!
+15. You can personalize the buttons "Fullscreen" and "Quit fullscreen" by giving class names in your view's `get_context_data`:
+
+```python
+
+def get_context_data(self, **kwargs):
+    context = super().get_context_data(**kwargs)
+
+    ...
+
+    context["button_fullscreen_classes"] = "myClass1 myClass2"
+    context["button_quit_fullscreen_classes"] = "myClass1 myClass2"
+
+    ...
+
+    return context
+```
+
+16. That should be it!
