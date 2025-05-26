@@ -11,8 +11,10 @@ django_superset_integration/urls.py
 django_superset_integration.egg-info/PKG-INFO
 django_superset_integration.egg-info/SOURCES.txt
 django_superset_integration.egg-info/dependency_links.txt
+django_superset_integration.egg-info/requires.txt
 django_superset_integration.egg-info/top_level.txt
 django_superset_integration/migrations/0001_initial.py
 django_superset_integration/migrations/__init__.py
 django_superset_integration/static/django_superset_integration/css/django-superset-integration.css
+django_superset_integration/static/django_superset_integration/js/superset-embedded-sdk.js
 django_superset_integration/templates/django_superset_integration/superset-integration.html
