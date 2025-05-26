@@ -15,10 +15,6 @@
     left: 0;
 }
 
-.fr-container--fluid {
-    overflow: visible;
-}
-
 iframe {
     width:100%;
     min-height:600px;
