@@ -56,8 +56,8 @@ btn_fullscreen.addEventListener("click", function()
 }); 
 
 
-btn_fullscreen_exit.addEventListener("click", function()
-{ 
+//exit fullscreen
+function exit_fullscreen(){
     try {
         header.style.display = "block";
     } catch (error) {
@@ -73,4 +73,14 @@ btn_fullscreen_exit.addEventListener("click", function()
     btn_fullscreen_exit.style.display = "none";
     superset_integration.classList.remove("fullScreen");
     iframe.height = iframe_height;
+}
+
+
+btn_fullscreen_exit.addEventListener("click", function()
+{ 
+    exit_fullscreen();
+});
+
+$("#superset-integration").on( "keyup", function() {
+    exit_fullscreen();
 });
