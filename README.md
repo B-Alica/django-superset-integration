@@ -110,7 +110,25 @@ def get_context_data(self, **kwargs):
     return context
 ```
 
-15. You can personalize the buttons "Fullscreen" and "Quit fullscreen" by giving class names in your view's `get_context_data`:
+15. If you want to use the "app_name" attribute of SupersetDashboard object, you have to provide your own logic, for example in the view where you want to integrate the dashboard
+
+```python
+def get(self, request, *args, **kwargs):
+
+    dashboard_name = "THE NAME OF YOUR DASHBOARD FROM STEP 13"
+    dashboard = SupersetDashboard.objects.get(name__iexact=dashboard_name)
+
+    # If the SupersetDashboard object has a 'app_name' attribute
+    # it can be displayed only in the corresponding app
+    if dashboard.app_name:
+        app_name = request.resolver_match.func.__module__.split(".")[0]
+        if app_name.lower() != dashboard.app_name.lower():
+            # If not in the right app, the dashboard is not displayed and the user
+            # is redirected to the index page
+            return redirect("index")
+```
+
+16. You can personalize the buttons "Fullscreen" and "Quit fullscreen" by giving class names in your view's `get_context_data`:
 
 ```python
 
@@ -127,4 +145,4 @@ def get_context_data(self, **kwargs):
     return context
 ```
 
-16. That should be it!
+17. That should be it!

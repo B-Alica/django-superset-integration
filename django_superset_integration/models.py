@@ -96,6 +96,13 @@ class SupersetDashboard(models.Model):
         Foreign key
         Superset instance containing the dashboard
 
+    app_name: str
+        Name of the django app where to display the dashboard
+        If empty, can be displayed in any app.
+        WARNING : app_name is not used in django-superset-integration
+        if you want to use it, you have to provide your own logic.
+        For example in your views.
+
     comment: str
         Free text field for your comments
 
@@ -123,6 +130,13 @@ class SupersetDashboard(models.Model):
         SupersetInstance,
         on_delete=models.CASCADE,
         null=False,
+    )
+
+    app_name = models.CharField(
+        "Nom de l'application dans laquelle afficher le dashboard",
+        max_length=250,
+        blank=True,
+        null=True,
     )
 
     comment = models.TextField(
