@@ -4,7 +4,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("django_superset_integration", "0001_initial"),
+        ("migrations", "0001_initial"),
     ]
 
     operations = [
