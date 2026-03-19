@@ -19,6 +19,10 @@ supersetEmbeddedSdk.embedDashboard({
 
 let iframe = document.getElementById("superset-integration").firstElementChild;
 
+// Ajouter les attributs allow-popups-to-escape-sandbox et allow-top-navigation-by-user-activation à l'iframe
+iframe.sandbox.add("allow-popups-to-escape-sandbox");
+iframe.sandbox.add("allow-top-navigation-by-user-activation");
+
 if (typeof iframe_height === 'undefined') {
     iframe_height = "1200px";  // If no iframe_height set, we set iframe_height
 } else if (!isNaN(iframe_height)) {
