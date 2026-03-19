@@ -15,13 +15,10 @@ supersetEmbeddedSdk.embedDashboard({
             expanded: true,
         }
     },
+    iframeSandboxExtras: ['allow-top-navigation-by-user-activation', 'allow-popups-to-escape-sandbox'],
 });
 
 let iframe = document.getElementById("superset-integration").firstElementChild;
-
-// Ajouter les attributs allow-popups-to-escape-sandbox et allow-top-navigation-by-user-activation à l'iframe
-iframe.sandbox.add("allow-popups-to-escape-sandbox");
-iframe.sandbox.add("allow-top-navigation-by-user-activation");
 
 if (typeof iframe_height === 'undefined') {
     iframe_height = "1200px";  // If no iframe_height set, we set iframe_height
@@ -31,6 +28,9 @@ if (typeof iframe_height === 'undefined') {
 
 window.onload = (event) => {
     iframe.height = iframe_height;
+    // Ajouter les attributs allow-popups-to-escape-sandbox et allow-top-navigation-by-user-activation à l'iframe
+    iframe.sandbox.add("allow-popups-to-escape-sandbox");
+    iframe.sandbox.add("allow-top-navigation-by-user-activation");
 };
 
 const btn_fullscreen = document.getElementById("superset-fullscreen");
