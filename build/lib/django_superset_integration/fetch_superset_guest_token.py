@@ -28,10 +28,13 @@ def create_rls_clause(user):
 
 
 @require_safe
-def fetch_superset_guest_token(request, dashboard_id: str):
+def fetch_superset_guest_token(
+    request,
+    dashboard_id: str,
+):
     """
     Get a guest token for integration of a Superset dashboard
-    1 - Get an access token
+    1 - Get an access token, or refresh the token if already present
     2 - Get a CSRF token by using the access token
     3 - Get a guest token by using the CSRF token
 
@@ -52,24 +55,42 @@ def fetch_superset_guest_token(request, dashboard_id: str):
         superset_domain = dashboard.domain.address
         superset_username = dashboard.domain.username
 
-        # Authentication for API access
-        url = f"https://{superset_domain}/api/v1/security/login"
+        refresh_token = request.session.get("refresh_token")
+        status_code = 0
 
-        def get_password(password):
-            cipher_suite = Fernet(settings.ENCRYPTION_KEY)
-            decrypted_password = cipher_suite.decrypt(password.encode())
-            return decrypted_password.decode()
+        if refresh_token:
+            # Refresh the access token
+            url = f"https://{superset_domain}/api/v1/security/refresh"
+            session.headers.update(
+                {"Authorization": f"Bearer {refresh_token}"}
+            )
+            session.headers.update({"Content-Type": "application/json"})
+            response = session.post(url)
+            status_code = response.status_code
 
-        params = {
-            "provider": "db",
-            "refresh": "True",
-            "username": superset_username,
-            "password": get_password(dashboard.domain.password),
-        }
-        session.headers.update({"Content-Type": "application/json"})
-        response = session.post(url, json=params)
+        if not refresh_token or status_code != 200:
+            # Authentication for API access
+            def get_password(password):
+                cipher_suite = Fernet(settings.ENCRYPTION_KEY)
+                decrypted_password = cipher_suite.decrypt(password.encode())
+                return decrypted_password.decode()
+
+            params = {
+                "provider": "db",
+                "refresh": "True",
+                "username": superset_username,
+                "password": get_password(dashboard.domain.password),
+            }
+
+            url = f"https://{superset_domain}/api/v1/security/login"
+            session.headers.update({"Content-Type": "application/json"})
+            response = session.post(url, json=params)
 
         access_token = response.json()["access_token"]
+        try:
+            request.session["refresh_token"] = response.json()["refresh_token"]
+        except Exception:
+            pass
 
         session.headers.update({"Authorization": f"Bearer {access_token}"})
         url = f"https://{superset_domain}/api/v1/security/csrf_token/"
