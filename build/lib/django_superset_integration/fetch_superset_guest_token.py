@@ -9,21 +9,30 @@ from django.conf import settings
 from .models import SupersetDashboard
 
 
-def create_rls_clause(user):
+def create_rls_clause(user, dashboard: SupersetDashboard):
     """
     SQL clause to apply to the dashboard data
     Can be adjusted to limit data displayed in the dashboard
     Clause "1=1" apply no filter, so we get all the data
     Clause "1=0" get no data
+    To implement your own clauses, you can override this function.
 
     Return format : [{"clause": "1=1"}]
+
+    Parameters:
+        user: User object who needs to access the dashboard
+        dashboard_name (SupersetDashboard): SupersetDashboard object
+            the user needs to access.
+            When you override this function, you may need to make different
+            clauses based on which dashboard is accessed.
     """
 
     if not user:
         # No data
         return [{"clause": "1=0"}]
 
-    # All data
+    # By default, all data. If you want to filter data, you need to
+    # override this function and implement your own behaviour
     return [{"clause": "1=1"}]
 
 
@@ -118,7 +127,7 @@ def fetch_superset_guest_token(
         else:
             rls_function = create_rls_clause
 
-        rls = rls_function(user)
+        rls = rls_function(user, dashboard)
 
         if not rls:
             # If no rls clause, show no data
