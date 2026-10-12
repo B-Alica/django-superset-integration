@@ -55,7 +55,7 @@ ENCRYPTION_KEY = os.environ.get("FERNET_KEY", "").encode()
 RLS_FUNCTION = "my_app.my_module.create_rls_clause"
 ```
 
-Your function must take a parameter `user` and return a SQL rls clause like this : `[{"clause": "1=1"}]`
+Your function must take a parameter `user` and a parameter `dashboard` (SupersetDashboard object) and return a SQL rls clause like this : `[{"clause": "1=1"}]`
 (where you replace 1=1 by the clause you want).
 
 See Superset documentation for more information
