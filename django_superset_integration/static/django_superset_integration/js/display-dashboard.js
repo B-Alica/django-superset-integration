@@ -4,7 +4,7 @@ const superset_domain = data2.supersetdomain;
 let iframe_height = data2.iframeheight;
 
 // Display dashboard inside #graph element
-supersetEmbeddedSdk.embedDashboard({
+const dashboard = supersetEmbeddedSdk.embedDashboard({
     id: dashboard_integration_id,
     supersetDomain: "https://" + superset_domain,
     mountPoint: document.getElementById("superset-integration"),
@@ -13,10 +13,35 @@ supersetEmbeddedSdk.embedDashboard({
         hideTitle: true,
         filters: {
             expanded: true,
-        }
+        },
+        emitDataMasks: true // Emit filter state changes
     },
-    iframeSandboxExtras: ['allow-top-navigation-by-user-activation', 'allow-popups-to-escape-sandbox'],
+    iframeSandboxExtras: ['allow-top-navigation-by-user-activation', 'allow-popups-to-escape-sandbox']
 });
+
+function processDataMaskChange(dataMaskConfig) {
+    console.log("Received a data mask change from the dashboard:");
+    console.log(dataMaskConfig);
+}
+
+dashboard.then(dashboardElement => {
+    dashboardElement.observeDataMask(processDataMaskChange);
+});
+
+// const response = await fetch(
+//   "https://"+superset_domain+"/api/v1/dashboard/"+dashboard_integration_id+"/permalink",
+//   {
+//     method: "POST",
+//     headers: {
+//       "Authorization": `Bearer ${accessToken}`,
+//       "Content-Type": "application/json"
+//     },
+//     body: JSON.stringify({ key: "value" })
+//   }
+// );
+// const data = await response.json();
+// console.log(data);
+
 
 let iframe = document.getElementById("superset-integration").firstElementChild;
 
